@@ -89,6 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
       final user = await _authService.getProfile();
        print('User ID: ${user.id}');
+       print('Full name: ${user.fullname}');
+       print('email: ${user.email}');
       if (user.username == null || user.username!.isEmpty) {
         print(user);
         Navigator.of(context).pushReplacement(
