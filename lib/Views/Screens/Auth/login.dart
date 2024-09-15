@@ -85,10 +85,12 @@ class _LoginScreenState extends State<LoginScreen> {
       // Read the token after storing (for testing or further usage)
       final storedToken = await _storage.read(key: 'auth_token');
       print('Stored Token: $storedToken');
+      
 
       final user = await _authService.getProfile();
-
+       print('User ID: ${user.id}');
       if (user.username == null || user.username!.isEmpty) {
+        print(user);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const UsernameScreen()),
         );

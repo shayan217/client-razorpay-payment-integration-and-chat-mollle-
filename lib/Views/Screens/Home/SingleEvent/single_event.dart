@@ -1061,9 +1061,6 @@ class SingleEventScreen extends StatefulWidget {
   final String members;
   final String description;
   final int eventId;
-
-  // final int minimumAge; // Add minimum age property
-
   const SingleEventScreen({
     Key? key,
     required this.title,
@@ -1075,7 +1072,6 @@ class SingleEventScreen extends StatefulWidget {
     required this.members,
     required this.description,
     required this.eventId,
-    // required this.minimumAge, // Add minimum age to constructor
   }) : super(key: key);
 
   @override
@@ -1095,32 +1091,7 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
   void initState() {
     super.initState();
     _checkEventStatus();
-
-    // Initialize Razorpay
-    // _razorpay = Razorpay();
-    // razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-    // razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    // razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
-  //  void _openCheckout() {
-  //   var options = {
-  //     'key': 'rzp_live_dqI5SlUnHw3ykT', // Replace with your Razorpay key
-  //     'amount': (widget.price * 100).toInt(), // Razorpay expects amount in paise
-  //     'name': widget.title,
-  //     'description': 'Entry fee for the event',
-  //     'prefill': {'contact': '', 'email': ''}, // Optionally prefill user's data
-  //     'external': {
-  //       'wallets': ['paytm']
-  //     }
-  //   };
-  //   try {
-  //     _razorpay.open(options);
-  //   } catch (e) {
-  //     print('Error: $e');
-  //   }
-  // }
-
-
 
   Future<void> _checkEventStatus() async {
     try {
@@ -1137,7 +1108,6 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
       print('Error checking event status: $e');
     }
   }
-
   Future<void> _reportEvent() async {
     if (isReported || isReportLoading) return;
 
@@ -1171,7 +1141,6 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
       });
     }
   }
-
   Future<void> _likeEvent() async {
     if (isLikeLoading) return;
 
@@ -1203,18 +1172,12 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
       });
     }
   }
-
-  
-
   Razorpay razorpay = Razorpay();
-
   @override
   Widget build(BuildContext context) {
     razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -1375,41 +1338,7 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
                             ),
                           ),
                         ),
-                        
-                        // ElevatedButton(
-                        //     onPressed: () {
-                        //     //  _openCheckout();
-                        //       var options = {
-                        //         // 'key': 'rzp_test_GcZZFDPP0jHtC4',
-                        //         'key': 'rzp_live_dqI5SlUnHw3ykT',
-                        //         'amount': (widget.price * 100),
-                        //         'name': widget.title,
-                        //         'description': 'Entry fee for the event',
-                        //         'prefill': {'contact': '', 'email': ''},
-                        //         'external': {'wallets': ['paytm']},
-                        //       };
-                        //       razorpay.open(options);
-                        //     },
-                        //     child: Text("Join Now"))
-                        
-                        
-                        // ElevatedButton(
-                        //     onPressed: () {
-                        //     //  _openCheckout();
-                        //       var options = {
-                        //         // 'key': 'rzp_test_GcZZFDPP0jHtC4',
-                        //         'key': 'rzp_live_dqI5SlUnHw3ykT',
-                        //         'amount': (widget.price * 100),
-                        //         'name': widget.title,
-                        //         'description': 'Entry fee for the event',
-                        //         'prefill': {'contact': '', 'email': ''},
-                        //         'external': {'wallets': ['paytm']},
-                        //       };
-                        //       razorpay.open(options);
-                        //     },
-                        //     child: Text("Join Now"))
                       ],
-                      
                     ),
                   ],
                 ),
@@ -1420,7 +1349,6 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
       ),
     );
   }
-
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     print('Payment Successful: ${response.paymentId}');
     ScaffoldMessenger.of(context).showSnackBar(
@@ -1429,82 +1357,39 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
     );
     _joinEvent();
   }
-
   void _handlePaymentError(PaymentFailureResponse response) {
     print('Payment Error: ${response.code} | ${response.message}');
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Payment failed: ${response.message}')),
     );
   }
-
   void _handleExternalWallet(ExternalWalletResponse response) {
     print('External Wallet: ${response.walletName}');
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Payment via ${response.walletName} successful.')),
     );
   }
-
-  // Future<void> _joinEvent() async {
-  //   if (isJoinLoading) return;
-
-  //   setState(() {
-  //     isJoinLoading = true;
-  //   });
-
-  //   try {
-  //     await _authService.joinEvent(widget.eventId);
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text('Event joined successfully.')),
-  //     );
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //           builder: (context) => Chat(
-  //                 eventId: widget.eventId,
-  //               )),
-  //     );
-  //   } catch (e) {
-  //     print('Error joining event: $e');
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('Failed to join event: ${e.toString()}')),
-  //     );
-  //   } finally {
-  //     setState(() {
-  //       isJoinLoading = false;
-  //     });
-  //   }
-  // }
   Future<void> _joinEvent() async {
   if (isJoinLoading) return;
-
   setState(() {
     isJoinLoading = true;
   });
-
-  // Razorpay payment options
   var options = {
-    'key': 'rzp_live_dqI5SlUnHw3ykT', // Your live Razorpay key
-    'amount': (widget.price * 100).toInt(), // Amount in paise (100 paise = 1 INR)
+    'key': 'rzp_live_dqI5SlUnHw3ykT', 
+    'amount': (widget.price * 100).toInt(),
     'name': widget.title,
     'description': 'Entry fee for the event',
     'prefill': {'contact': '', 'email': ''},
     'external': {'wallets': ['paytm']},
   };
-
   try {
-    // Open Razorpay payment
     razorpay.open(options);
-
-    // Listen to Razorpay payment success or failure
     razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, (response) async {
-      // Payment succeeded, now join the event
       try {
         await _authService.joinEvent(widget.eventId);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Event joined successfully.')),
         );
-
-        // Navigate to chat page
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -1518,7 +1403,6 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
         );
       }
     });
-
     razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (response) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Payment failed: ${response.toString()}')),
@@ -1535,11 +1419,8 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
     });
   }
 }
-
-
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     razorpay.clear();
   }
