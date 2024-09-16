@@ -1175,6 +1175,7 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
   Razorpay razorpay = Razorpay();
   @override
   Widget build(BuildContext context) {
+    _razorpay = Razorpay();
     razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
